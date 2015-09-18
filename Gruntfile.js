@@ -44,9 +44,9 @@ module.exports = function (grunt) {
         files: ['<%= yeoman.src %>/**/*.spec.js'],
         tasks: ['karma']
       },
-      compass: {
+      sass:{
         files: ['<%= yeoman.src %>/**/*.{scss,sass}'],
-        tasks: ['compass:server', 'autoprefixer']
+        tasks: ['sass', 'autoprefixer']
       },
       gruntfile: {
         files: ['Gruntfile.js']
@@ -132,21 +132,13 @@ module.exports = function (grunt) {
     },
 
     // Compiles Sass to CSS and generates necessary files if requested
-    compass: {
+    sass: {
       options: {
-        sassDir: '<%= yeoman.src %>',
-        cssDir: '.tmp/styles',
-        relativeAssets: false,
-        assetCacheBuster: false
-      },
-      server: {
-        options: {
-          debugInfo: true
-        }
+        sourceMap: true
       },
       dist: {
-        options: {
-          noLineComments: true
+        files: {
+          './dist/angular-tour.css': './src/tour/**/*.scss'
         }
       }
     },
@@ -470,7 +462,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
-    'compass:dist',
+    'sass:dist',
     'autoprefixer',
     'buildmodules',
     'optionaltasks:css',
@@ -485,7 +477,6 @@ module.exports = function (grunt) {
   grunt.registerTask('serve', function (target) {
     grunt.task.run([
       'clean:server',
-      'concurrent:server',
       'autoprefixer',
       'connect:livereload',
       'watch'
